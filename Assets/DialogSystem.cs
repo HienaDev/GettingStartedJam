@@ -2,40 +2,20 @@ using System;
 using TMPro;
 using UnityEngine;
 using NaughtyAttributes;
+using System.Collections.Generic;
 
 public class DialogSystem : MonoBehaviour
 {
-    [Serializable]
-    public struct Dialogue
-    {
-        public string name;
-        public string text;
-        public GameObject camera;
 
-        public bool hasItems;
-        [HideIf("hasItems")]
-        public bool hasOptions;
+    [SerializeField] private DialogueScript initialDialogueScript;
 
-        [ShowIf("hasOptions")]
-        public Option[] options;
-    }
-
-    [Serializable]
-    public struct Option
-    {
-        public string text;
-        public Dialogue[] nextDialogue;
-
-        public bool giveItems;
-    }
-
-    [SerializeField] private Dialogue[] initialDialogue;
 
     [Header("Dialog System UI")]
     [SerializeField] private TextMeshProUGUI dialogBoxText;
     [SerializeField] private GameObject dialogBox;
     [SerializeField] private GameObject nextButton;
     [SerializeField] private GameObject optionPrefab;
+    [SerializeField] private float optionRotationSpeed = 15f;
 
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
@@ -43,38 +23,60 @@ public class DialogSystem : MonoBehaviour
 
     [Header("Items")]
     [SerializeField] private Item[] items;
+    [SerializeField] private RectTransform centerOfOptions;
+    [SerializeField] private float ellipseWidth = 400f;  // Horizontal radius (X)
+    [SerializeField] private float ellipseHeight = 225f; // Vertical radius (Y) - 16:9 ratio
+
 
     [Header("Debug")]
     [SerializeField] private Transform placeToSpawnItems;
 
     private Dialogue[] currentDialogue;
-    private int currentTextIndex = -1;   
+    private int currentTextIndex = -1;
+    private List<GameObject> spawnedOptions = new List<GameObject>();
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartNewDialogue(initialDialogue);
+        StartNewDialogue(initialDialogueScript.dialogues);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void StartNewDialogue(Dialogue[] newDialogue)
     {
         currentDialogue = newDialogue;
-        dialogBoxText.text = currentDialogue[currentTextIndex].text;
         currentTextIndex = -1;
         dialogBox.SetActive(true);
         NextChat();
     }
 
-    public void NextChat()
+    public void NextChat(string optionText = "")
     {
+        if (optionText != "")
+        {
+            dialogBoxText.text = optionText;
+            return;
+        }
+
         currentTextIndex++;
 
-        if(currentDialogue[currentTextIndex].camera != null)
+        if (currentTextIndex >= currentDialogue.Length)
+        {
+            mainCamera.enabled = true;
+            dialogueCamera.enabled = false;
+            dialogBox.SetActive(false);
+            nextButton.SetActive(false); // hide the next button
+            return;
+        }
+
+        dialogBoxText.text = currentDialogue[currentTextIndex].text;
+
+        if (currentDialogue[currentTextIndex].camera != null)
         {
             mainCamera.enabled = false;
             dialogueCamera.enabled = true;
@@ -91,48 +93,125 @@ public class DialogSystem : MonoBehaviour
             return;
         }
 
-        if(currentDialogue[currentTextIndex].hasOptions)
+        if (currentDialogue[currentTextIndex].hasOptions)
         {
             ShowOptions(currentDialogue[currentTextIndex]);
             return;
         }
 
-        if (currentTextIndex >= currentDialogue.Length)
-        {
-            mainCamera.enabled = true;
-            dialogueCamera.enabled = false;
-            dialogBox.SetActive(false);
-        }
 
-        dialogBoxText.text = currentDialogue[currentTextIndex].text;
+
+
     }
 
     private void ShowOptions(Dialogue dialogue)
     {
-        for (int i = 0; i < dialogue.options.Length; i++)
+        ClearSpawnedOptions(); // clear previously spawned buttons
+        nextButton.SetActive(false); // hide the next button
+
+        int count = dialogue.options.Length;
+
+        for (int i = 0; i < count; i++)
         {
-            GameObject option = Instantiate(optionPrefab, dialogBox.transform);
+            GameObject option = Instantiate(optionPrefab, centerOfOptions);
+            spawnedOptions.Add(option); // track it
+
             option.GetComponentInChildren<TextMeshProUGUI>().text = dialogue.options[i].text;
-            int index = i; // Capture the current index for the listener
-            option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => StartNewDialogue(dialogue.options[i].nextDialogue));
+
+            int index = i;
+            if (dialogue.options[i].nextDialogue != null)
+            {
+                option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                    nextButton.SetActive(true));
+                option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                    ClearSpawnedOptions());
+                option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                    StartNewDialogue(dialogue.options[index].nextDialogue.dialogues));
+
+            }
+            else
+            {
+                string answerText = dialogue.options[i].answerIFNoDialogue;
+                option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                    nextButton.SetActive(true));
+                option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                     ClearSpawnedOptions());
+                option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                    NextChat(answerText));
+
+            }
+
+            // Before positioning
+            float angle = i * Mathf.PI * 2f / count;
+            Vector3 startPos = new Vector3(Mathf.Cos(angle) * ellipseWidth, Mathf.Sin(angle) * ellipseHeight, 0f);
+
+            // Apply position
+            RectTransform rect = option.GetComponent<RectTransform>();
+            rect.localPosition = startPos;
+
+            // Add and initialize rotation script
+            var rotator = option.AddComponent<RotateAroundCenter>();
+            rotator.Initialize(centerOfOptions, angle, ellipseWidth, ellipseHeight, optionRotationSpeed); // adjust speed as needed
+
         }
     }
+
+
 
     private void GenerateRandomOptions()
     {
-        // Clone and shuffle the item list
+        ClearSpawnedOptions(); // clear previously spawned buttons
+        nextButton.SetActive(false); // hide the next button
+
         Item[] shuffledItems = (Item[])items.Clone();
         ShuffleArray(shuffledItems);
 
-        // Spawn up to 3 unique options
-        for (int i = 0; i < Mathf.Min(3, shuffledItems.Length); i++)
+        Debug.Log(shuffledItems.Length);
+
+        int count = Mathf.Min(3, shuffledItems.Length);
+
+        for (int i = 0; i < count; i++)
         {
             Item item = shuffledItems[i];
-            GameObject option = Instantiate(optionPrefab, dialogBox.transform);
+            GameObject option = Instantiate(optionPrefab, centerOfOptions);
+            spawnedOptions.Add(option);
+
             option.GetComponentInChildren<TextMeshProUGUI>().text = item.nameOfItem;
-            option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => Instantiate(item, placeToSpawnItems));
+            option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                Instantiate(item.itemPrefab, placeToSpawnItems));
+            option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                ClearSpawnedOptions());
+            option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                NextChat(item.answersToItem[UnityEngine.Random.Range(0, item.answersToItem.Length)]));
+            option.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+                nextButton.SetActive(true));
+
+            // Before positioning
+            float angle = i * Mathf.PI * 2f / count;
+            Vector3 startPos = new Vector3(Mathf.Cos(angle) * ellipseWidth, Mathf.Sin(angle) * ellipseHeight, 0f);
+
+            // Apply position
+            RectTransform rect = option.GetComponent<RectTransform>();
+            rect.localPosition = startPos;
+
+            // Add and initialize rotation script
+            var rotator = option.AddComponent<RotateAroundCenter>();
+            rotator.Initialize(centerOfOptions, angle, ellipseWidth, ellipseHeight, optionRotationSpeed); // adjust speed as needed
+
         }
     }
+
+    private void ClearSpawnedOptions()
+    {
+        Debug.Log("Cleared");
+        foreach (GameObject option in spawnedOptions)
+        {
+            if (option != null)
+                Destroy(option);
+        }
+        spawnedOptions.Clear();
+    }
+
 
     private void ShuffleArray<T>(T[] array)
     {

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f285c776912be1346a1c430f5b5e0650, type: 3}
+  m_Name: Square Red
+  m_EditorClassIdentifier: 
+  nameOfItem: 6 Faced Encarnated Thing
+  itemPrefab: {fileID: 5724298151372568407, guid: c77be70473392ff4fa131fd16a412cc3, type: 3}
+  answersToItem:
+  - Oh I got it right here, ol' up!

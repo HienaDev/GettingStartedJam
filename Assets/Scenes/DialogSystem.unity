@@ -294,6 +294,7 @@ RectTransform:
   m_Children:
   - {fileID: 1227325387}
   - {fileID: 1660176866}
+  - {fileID: 662633732}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -439,6 +440,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409406850}
   m_CullTransparentMesh: 1
+--- !u!1 &662633731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 662633732}
+  - component: {fileID: 662633734}
+  - component: {fileID: 662633733}
+  m_Layer: 5
+  m_Name: Center Points For Options
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &662633732
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662633731}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 315553319}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 90}
+  m_SizeDelta: {x: 20, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &662633733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662633731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &662633734
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662633731}
+  m_CullTransparentMesh: 1
 --- !u!1 &839787765
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,19 +559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233e579cc351f38449805e0d4ec2856f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialDialogue:
-  - name: Glorp
-    text: Gimme some items
-    camera: {fileID: 0}
-    hasItems: 0
-    hasOptions: 0
-    options: []
-  - name: "Sheriff Wandersbe\xEBgle"
-    text: Sure thing, whatcha need?
-    camera: {fileID: 0}
-    hasItems: 1
-    hasOptions: 0
-    options: []
+  initialDialogueScript: {fileID: 11400000, guid: 7a1dbcd7f4a81744b9219d361d8fc81e, type: 2}
   dialogBoxText: {fileID: 861754129}
   dialogBox: {fileID: 1227325386}
   nextButton: {fileID: 1660176865}
@@ -503,9 +567,12 @@ MonoBehaviour:
   mainCamera: {fileID: 1467490355}
   dialogueCamera: {fileID: 876020629}
   items:
-  - {fileID: 4145706745356888633, guid: c77be70473392ff4fa131fd16a412cc3, type: 3}
-  - {fileID: 5056619817383039957, guid: 9ad8b4ff02f1ef94abc9f5a46d6e7ed3, type: 3}
-  - {fileID: 5036915840511453820, guid: 8234a965e8265004e843629dd7850f5a, type: 3}
+  - {fileID: 11400000, guid: 2b55b72386bcfe2498c67d580a552a39, type: 2}
+  - {fileID: 11400000, guid: 38fe2cec929a67b448822044e09a308f, type: 2}
+  - {fileID: 11400000, guid: ec8ace359d4852e4f954720c607ad954, type: 2}
+  centerOfOptions: {fileID: 662633732}
+  ellipseWidth: 200
+  ellipseHeight: 100
   placeToSpawnItems: {fileID: 888927239}
 --- !u!1 &861754127
 GameObject:
@@ -653,7 +720,6 @@ GameObject:
   m_Component:
   - component: {fileID: 876020630}
   - component: {fileID: 876020629}
-  - component: {fileID: 876020628}
   - component: {fileID: 876020627}
   m_Layer: 0
   m_Name: Dialog Camera
@@ -706,14 +772,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &876020628
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 876020626}
-  m_Enabled: 1
 --- !u!20 &876020629
 Camera:
   m_ObjectHideFlags: 0
@@ -1286,7 +1344,7 @@ MonoBehaviour:
       - m_Target: {fileID: 839787767}
         m_TargetAssemblyTypeName: DialogSystem, Assembly-CSharp
         m_MethodName: NextChat
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

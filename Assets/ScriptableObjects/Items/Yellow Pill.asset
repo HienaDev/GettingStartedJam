@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f285c776912be1346a1c430f5b5e0650, type: 3}
+  m_Name: Yellow Pill
+  m_EditorClassIdentifier: 
+  nameOfItem: Colored like star 4357 of galaxy Gorbuloid and shape like a small degistable
+  itemPrefab: {fileID: 3490236010320231295, guid: 9ad8b4ff02f1ef94abc9f5a46d6e7ed3, type: 3}
+  answersToItem:
+  - Ok... I'll see what I got

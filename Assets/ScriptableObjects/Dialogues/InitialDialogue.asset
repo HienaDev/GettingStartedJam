@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0be9e25b05ab85d4b99d5bbe403d6b48, type: 3}
+  m_Name: InitialDialogue
+  m_EditorClassIdentifier: 
+  dialogues:
+  - name: Glorp
+    text: Hello star hat man
+    camera: {fileID: 0}
+    hasItems: 0
+    hasOptions: 0
+    options: []
+  - name: "Sheriff Wandersbe\xEBgle"
+    text: Hello sir, do you have a license for this vehicle?
+    camera: {fileID: 0}
+    hasItems: 0
+    hasOptions: 1
+    options:
+    - text: Yes
+      nextDialogue: {fileID: 0}
+      answerIFNoDialogue: Awesome
+    - text: No
+      nextDialogue: {fileID: 0}
+      answerIFNoDialogue: Not so good mister
+  - name: "Sheriff Wandersbe\xEBgle"
+    text: Anyways, how did this happen?
+    camera: {fileID: 0}
+    hasItems: 0
+    hasOptions: 1
+    options:
+    - text: We were drinking
+      nextDialogue: {fileID: 0}
+      answerIFNoDialogue: Thats awesome dude
+    - text: We just parked
+      nextDialogue: {fileID: 0}
+      answerIFNoDialogue: This is a no parking zone
+  - name: "Sheriff Wandersbe\xEBgle"
+    text: How can I help you?
+    camera: {fileID: 0}
+    hasItems: 0
+    hasOptions: 1
+    options:
+    - text: We need stuff to get our car off the road, do you have any of these?
+      nextDialogue: {fileID: 11400000, guid: 79a4a7227f3dbf74cb0faa8c6881524b, type: 2}
+      answerIFNoDialogue: Thats awesome dude
