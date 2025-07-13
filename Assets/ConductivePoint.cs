@@ -11,11 +11,10 @@ public class ConductivePoint : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        ConductivePoint conductivePoint = collision.gameObject.GetComponent<ConductivePoint>();
-        if (conductivePoint != null)
+        ConductiveItem item = collision.gameObject.GetComponent<ConductiveItem>();
+        if (item != null)
         {
-            ConductiveItem item = conductivePoint.conductiveItem;
-            if (conductiveItem.PoweredOn && !item.PoweredOn)
+            if(conductiveItem.PoweredOn && !item.PoweredOn)
             {
                 // If the conductive item is powered on and the colliding item is not, power it on
                 Debug.Log($"Powering on {item.gameObject.name} from {conductiveItem.gameObject.name}.");
@@ -38,10 +37,9 @@ public class ConductivePoint : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        ConductivePoint conductivePoint = collision.gameObject.GetComponent<ConductivePoint>();
-        if (conductivePoint != null)
+        ConductiveItem item = collision.gameObject.GetComponent<ConductiveItem>();
+        if (item != null)
         {
-            ConductiveItem item = conductivePoint.conductiveItem;
             // If the conductive item is powered on and the colliding item is, power it off
             Debug.Log($"Powering off {item.gameObject.name} from {conductiveItem.gameObject.name}.");
             item.PoweredOn = false; // Power off the item when it exits collision with this point
