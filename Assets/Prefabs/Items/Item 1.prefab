@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8599143788207774835}
   - component: {fileID: 3577971585477148372}
   - component: {fileID: 9007341683999430750}
+  - component: {fileID: 6288859074296554682}
+  - component: {fileID: 7508189983745045992}
   m_Layer: 0
   m_Name: Power end (1)
   m_TagString: Untagged
@@ -28,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4610268501402146147}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.73}
+  m_LocalPosition: {x: 0, y: 0, z: -1.12}
   m_LocalScale: {x: 0.25930917, y: 0.48735, z: 0.6778064}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -108,6 +110,45 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6288859074296554682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4610268501402146147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc2af0e94798e444b6ab63de807b4a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &7508189983745045992
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4610268501402146147}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5724298151372568407
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,6 +252,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3155daa970ffdb4e8fba68fc570c5d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointsToPower: []
+  poweredOn: 0
+  emissiveMaterial: {fileID: 0}
 --- !u!65 &9104381357808931965
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -271,6 +315,8 @@ GameObject:
   - component: {fileID: 5020591404133843277}
   - component: {fileID: 3464148393034610519}
   - component: {fileID: 3483511102531651786}
+  - component: {fileID: 1764935677387275924}
+  - component: {fileID: 1195552825117168094}
   m_Layer: 0
   m_Name: Power end
   m_TagString: Untagged
@@ -287,7 +333,7 @@ Transform:
   m_GameObject: {fileID: 6790533716630561547}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.67}
+  m_LocalPosition: {x: 0, y: 0, z: 1.19}
   m_LocalScale: {x: 0.25930917, y: 0.48735, z: 0.6778064}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -367,3 +413,42 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1764935677387275924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6790533716630561547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc2af0e94798e444b6ab63de807b4a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &1195552825117168094
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6790533716630561547}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
