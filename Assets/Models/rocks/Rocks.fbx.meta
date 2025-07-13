@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 02a5a962cf8ef68a58e2c6f99f6df844
+guid: dff13d93507561b4dacb15a1f8353399
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Rock01Shader
-    second: {fileID: 2100000, guid: 5451346e7df0e6adea7e9327ab8073d0, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Rock02Shader
-    second: {fileID: 2100000, guid: 3931449c4fc89414e8654cadc2c49e86, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

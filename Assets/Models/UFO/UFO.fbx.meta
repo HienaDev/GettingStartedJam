@@ -1,24 +1,9 @@
 fileFormatVersion: 2
-guid: d54292208d8b85967aaea5a2378cc947
+guid: e5dd89fd0c4b24248be1319fb7d173bb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: UFO Metal
-    second: {fileID: 2100000, guid: 6f50b0bb326905f1e8e82cfc38ae5cbf, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: UFO_BLACK
-    second: {fileID: 2100000, guid: eb1732d739f2e66408f50e3b52b8b6c0, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ventanilla
-    second: {fileID: 2100000, guid: b6c77f58fdbb59e6281449d52a1a2faf, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
