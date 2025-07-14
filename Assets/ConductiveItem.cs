@@ -7,7 +7,9 @@ public class ConductiveItem : MonoBehaviour
     [SerializeField] private Renderer[] pointsToPower;
     [SerializeField] private bool poweredOn = false;
 
-    private List<ConductiveItem> poweringMeOn;
+    private HashSet<ConductiveItem> poweringMeOn;
+    private HashSet<ConductiveItem> poweringItems;
+
 
     [SerializeField] private bool isPowerSource = false;
 
@@ -53,7 +55,7 @@ public class ConductiveItem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        poweringMeOn = new List<ConductiveItem>();
+        poweringMeOn = new HashSet<ConductiveItem>();
 
         foreach (Renderer point in pointsToPower)
         {
@@ -74,6 +76,9 @@ public class ConductiveItem : MonoBehaviour
             TogglePower(false); // Ensure the item starts in the correct state
         }
     }
+
+
+
     // Update is called once per frame
     void Update()
     {
@@ -81,69 +86,101 @@ public class ConductiveItem : MonoBehaviour
         {
             TogglePower(!poweredOn);
         }
-    }
 
-    public void RegisterItem(ConductiveItem item)
-    {
-        if (!poweringMeOn.Contains(item))
+        bool anyPoweredOn = false;
+        foreach (ConductiveItem item in poweringMeOn)
         {
-            poweringMeOn.Add(item);
-            Debug.Log($"{gameObject.name} registered to power on {item.gameObject.name}.");
-            if (!poweredOn)
+            if (item != null && (item.PoweredOn || item.isPowerSource))
             {
-                TogglePower(true); // If this item is being powered on, turn it on
+                anyPoweredOn = true;
+                break;
+
             }
         }
+
+        TogglePower(anyPoweredOn);
     }
 
-    public void UnregisterItem(ConductiveItem item)
+    public void RegisterItemPoweringMe(ConductiveItem item)
     {
-        if (poweringMeOn.Contains(item))
-        {
-            poweringMeOn.Remove(item);
-            Debug.Log($"{gameObject.name} unregistered from powering on {item.gameObject.name}.");
-            if(poweringMeOn.Count <= 0)
-            {
-                TogglePower(false); // If no items are powering this one, turn it off
-            }
-        }
+
+        poweringMeOn.Add(item);
+        Debug.Log($"{gameObject.name} registered to power on {item.gameObject.name}.");
+
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void UnregisterItemPoweringMe(ConductiveItem item)
     {
+
+        poweringMeOn.Remove(item);
+        Debug.Log($"{gameObject.name} unregistered from powering on {item.gameObject.name}.");
+
+    }
+
+    public void RegisterItemImPowering(ConductiveItem item)
+    {
+        poweringItems.Add(item);
+        Debug.Log($"{gameObject.name} registered to power {item.gameObject.name}.");
+    }
+
+    public void UnregisterItemImPowering(ConductiveItem item)
+    {
+        poweringItems.Remove(item);
+        Debug.Log($"{gameObject.name} unregistered from powering {item.gameObject.name}.");
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        poweringMeOn.Clear();
         ConductiveItem item = collision.gameObject.GetComponent<ConductiveItem>();
         if (item != null && ((1 << collision.contacts[0].thisCollider.gameObject.layer) & conductiveLayer) != 0)
         {
-            Debug.Log("Collided with: " + collision.contacts[0].thisCollider.name);
-            if (this.PoweredOn && !item.PoweredOn)
-            {
-                // If the conductive item is powered on and the colliding item is not, power it on
-                Debug.Log($"Powering on {item.gameObject.name} from {this.gameObject.name}.");
-                item.PoweredOn = true; // Power on the item when it collides with this point
-                item.RegisterItem(this);
-            }
-            else if (!this.PoweredOn && item.PoweredOn)
-            {
-                // If the conductive item is not powered on and the colliding item is, power condutrive item on
-                Debug.Log($"Powering oon {this.gameObject.name} from {item.gameObject.name}.");
-                this.PoweredOn = true; // Power off the item when it collides with this point
-                RegisterItem(item);
-            }
-            else if (this.PoweredOn && item.PoweredOn)
-            {
-                Debug.Log("Both items are powered on, no action taken.");
-            }
+            //item.RegisterItem(this);
+            //RegisterItem(item);
         }
     }
+
+
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    ConductiveItem item = collision.gameObject.GetComponent<ConductiveItem>();
+    //    if (item != null && ((1 << collision.contacts[0].thisCollider.gameObject.layer) & conductiveLayer) != 0)
+    //    {
+    //        item.RegisterItem(this);
+    //        RegisterItem(item);
+    //        //Debug.Log("Collided with: " + collision.contacts[0].thisCollider.name);
+    //        //if (this.PoweredOn && !item.PoweredOn)
+    //        //{
+    //        //    // If the conductive item is powered on and the colliding item is not, power it on
+    //        //    Debug.Log($"Powering on {item.gameObject.name} from {this.gameObject.name}.");
+    //        //    item.PoweredOn = true; // Power on the item when it collides with this point
+    //        //    item.RegisterItem(this);
+    //        //    this.RegisterItem(item);
+    //        //}
+    //        //else if (!this.PoweredOn && item.PoweredOn)
+    //        //{
+    //        //    // If the conductive item is not powered on and the colliding item is, power condutrive item on
+    //        //    Debug.Log($"Powering oon {this.gameObject.name} from {item.gameObject.name}.");
+    //        //    this.PoweredOn = true; // Power off the item when it collides with this point
+    //        //    RegisterItem(item);
+    //        //}
+    //        //else if (this.PoweredOn && item.PoweredOn)
+    //        //{
+    //        //    Debug.Log("Both items are powered on, no action taken.");
+    //        //}
+    //    }
+    //}
 
     private void OnCollisionExit(Collision collision)
     {
         ConductiveItem item = collision.gameObject.GetComponent<ConductiveItem>();
+        Debug.Log(collision.contacts[0] + " just exited");
         if (item != null && ((1 << collision.contacts[0].thisCollider.gameObject.layer) & conductiveLayer) != 0)
         {
-            // If the conductive item is powered on and the colliding item is, power it off
+      
             Debug.Log($"Powering off {item.gameObject.name} from {this.gameObject.name}.");
-            item.PoweredOn = false; // Power off the item when it exits collision with this point
+            item.PoweredOn = false;  
             item.UnregisterItem(this);
             UnregisterItem(item);
         }
