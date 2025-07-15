@@ -96,7 +96,13 @@ public class ConductiveItem : MonoBehaviour
                 anyPoweredOn = true;
                 break;
             }
-            foreach(ConductiveItem poweringItem in item.poweringMeOn)
+        }
+
+        // Divide in 2 so we dont need to iterate of the big loops
+        // if we are directly connected to a power source
+        foreach (ConductiveItem item in poweringMeOn)
+        {
+            foreach (ConductiveItem poweringItem in item.poweringMeOn)
             {
                 if (poweringItem.isPowerSource)
                 {
