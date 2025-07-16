@@ -88,33 +88,73 @@ public class ConductiveItem : MonoBehaviour
             TogglePower(!poweredOn);
         }
 
-        bool anyPoweredOn = false;
+        //bool anyPoweredOn = false;
+        //foreach (ConductiveItem item in poweringMeOn)
+        //{
+        //    if(item.isPowerSource)
+        //    {
+        //        anyPoweredOn = true;
+        //        break;
+        //    }
+        //}
+
+        //// Divide in 2 so we dont need to iterate of the big loops
+        //// if we are directly connected to a power source
+        //foreach (ConductiveItem item in poweringMeOn)
+        //{
+        //    foreach (ConductiveItem poweringItem in item.poweringMeOn)
+        //    {
+        //        if (poweringItem.isPowerSource)
+        //        {
+        //            anyPoweredOn = true;
+        //            break;
+        //        }
+        //    }
+        //}
+        //TogglePower(anyPoweredOn);
+
+        // Then in your main code:
+        bool anyPoweredOn = IsConnectedToPowerSource();
+        TogglePower(anyPoweredOn);
+
+    }
+
+    private bool IsConnectedToPowerSource()
+    {
+        var visited = new HashSet<ConductiveItem>();
+        var queue = new Queue<ConductiveItem>();
+
+        // Start with items directly connected to this one
         foreach (ConductiveItem item in poweringMeOn)
         {
-            if(item.isPowerSource)
+            if (!visited.Contains(item))
             {
-                anyPoweredOn = true;
-                break;
+                queue.Enqueue(item);
+                visited.Add(item);
             }
         }
 
-        // Divide in 2 so we dont need to iterate of the big loops
-        // if we are directly connected to a power source
-        foreach (ConductiveItem item in poweringMeOn)
+        while (queue.Count > 0)
         {
-            foreach (ConductiveItem poweringItem in item.poweringMeOn)
+            ConductiveItem current = queue.Dequeue();
+
+            if (current.isPowerSource)
+                return true;
+
+            // Add all items connected to current item
+            foreach (ConductiveItem item in current.poweringMeOn)
             {
-                if (poweringItem.isPowerSource)
+                if (!visited.Contains(item))
                 {
-                    anyPoweredOn = true;
-                    break;
+                    queue.Enqueue(item);
+                    visited.Add(item);
                 }
             }
         }
-        TogglePower(anyPoweredOn);
 
-
+        return false;
     }
+
 
 
     public void RegisterItemPoweringMe(ConductiveItem item)
